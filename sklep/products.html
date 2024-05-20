@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Produkty</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Strona główna</a></li>
+            <li><a href="products.html">Produkty</a></li>
+            <li><a href="cart.html"><i class="fas fa-shopping-cart"></i> Koszyk</a></li>
+            <li><a href="contact.html"><i class="fas fa-envelope"></i> Kontakt</a></li>
+        </ul>
+    </nav>
+    
+    <section id="products" class="content-section">
+        <h2>Bestsellery</h2>
+        <div class="product">
+            <img src="images/hantle.jpg" alt="Hantle">
+            <h3>Hantle</h3>
+            <p>Cena: 100.00 PLN</p>
+            <button onclick="addToCart(1, 'Hantle', 100.00)">Dodaj do koszyka</button>
+        </div>
+        <div class="product">
+            <img src="images/lawka.jpg" alt="Ławka do ćwiczeń">
+            <h3>Ławka do ćwiczeń</h3>
+            <p>Cena: 300.00 PLN</p>
+            <button onclick="addToCart(2, 'Ławka do ćwiczeń', 300.00)">Dodaj do koszyka</button>
+        </div>
+        <div class="product">
+            <img src="images/bieznia.jpg" alt="Bieżnia">
+            <h3>Bieżnia</h3>
+            <p>Cena: 2000.00 PLN</p>
+            <button onclick="addToCart(3, 'Bieżnia', 2000.00)">Dodaj do koszyka</button>
+        </div>
+    </section>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
+

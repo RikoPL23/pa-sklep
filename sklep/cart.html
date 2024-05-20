@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Koszyk</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Strona główna</a></li>
+            <li><a href="products.html">Produkty</a></li>
+            <li><a href="cart.html"><i class="fas fa-shopping-cart"></i> Koszyk</a></li>
+            <li><a href="contact.html"><i class="fas fa-envelope"></i> Kontakt</a></li>
+        </ul>
+    </nav>
+    <section>
+        <h1>Twój koszyk</h1>
+        <div id="cartItems">
+            <!-- Elementy koszyka będą tutaj ładowane przez JavaScript -->
+        </div>
+        <button onclick="checkout()">Zamów</button>
+    </section>
+    <script src="js/main.js"></script>
+</body>
+</html>
