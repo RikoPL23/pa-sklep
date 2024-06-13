@@ -1,27 +1,33 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <title>Koszyk</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="./images/favicon.png" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Twój Koszyk</title>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="index.html">Strona główna</a></li>
-            <li><a href="products.html">Produkty</a></li>
-            <li><a href="cart.html"><i class="fas fa-shopping-cart"></i> Koszyk</a></li>
-            <li><a href="contact.html"><i class="fas fa-envelope"></i> Kontakt</a></li>
-        </ul>
-    </nav>
-    <section>
-        <h1>Twój koszyk</h1>
-        <div id="cartItems">
-            <!-- Elementy koszyka będą tutaj ładowane przez JavaScript -->
+    <header>
+        <h1 class="header-title">
+            <span>Gymownia</span>
+        </h1>
+        <div class="auth-buttons">
+            <button class="auth-btn" onclick="window.location.href='index.html'">Sklep</button>
+            <button class="auth-btn" onclick="window.location.href='contact.html'">Kontakt</button>
         </div>
-        <button onclick="checkout()">Zamów</button>
-    </section>
-    <script src="js/main.js"></script>
+    </header>
+    <main class="container">
+        <h2>Twój Koszyk</h2>
+        <div class="basket-items"></div>
+        <p class="basket-total">Razem: <span id="basketTotal">0 zł</span></p>
+        <button id="placeOrderButton" style="display: none;">Złóż zamówienie</button>
+    </main>
+
+    <form id="orderForm" action="order.php" method="post" style="display: none;">
+        <input type="hidden" name="orderData" id="orderData" />
+    </form>
+
+    <script src="cart.js"></script>
 </body>
 </html>

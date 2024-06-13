@@ -1,31 +1,40 @@
 <?php
+include 'config.php';
 session_start();
-include('config.php');
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+$message = '';
+
+if (isset($_GET['message']) && $_GET['message'] == 'success') {
+    $message = 'Rejestracja udana. Możesz się teraz zalogować.';
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $sql = "SELECT id, username, password, role FROM users WHERE username = '$username'";
-    $result = mysqli_query($conn, $sql);
-    $user = mysqli_fetch_assoc($result);
+    $stmt = $conn->prepare("SELECT id, password, role FROM users WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $stmt->bind_result($id, $hashed_password, $role);
+    $stmt->fetch();
 
-    if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['user_name'] = $user['username'];
-        $_SESSION['user_role'] = $user['role'];
+    if (password_verify($password, $hashed_password)) {
+        $_SESSION['user_id'] = $id;
+        $_SESSION['username'] = $username;
+        $_SESSION['role'] = $role;
 
-        if ($user['role'] == 'admin') {
-            header("Location: admin_dashboard.php");
-        } elseif ($user['role'] == 'moderator') {
-            header("Location: moderator_dashboard.php");
+        if ($role == 'admin') {
+            header("Location: admin_panel.php");
         } else {
             header("Location: index.html");
         }
         exit();
     } else {
-        echo "Invalid username or password.";
+        echo "Invalid username or password";
     }
+
+    $stmt->close();
+    $conn->close();
 }
 ?>
 
@@ -43,16 +52,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <span>Gymownia</span> Logowanie
         </h1>
     </header>
-    <div class="auth-buttons">
-         
-            <button class="auth-btn" onclick="window.location.href='index.html'">Strona Główna</button>
-        </div>
     <main class="container">
         <section class="auth-form">
-            <form class="form" method="post" action="login.php">
+            <?php if ($message): ?>
+                <p class="success-message"><?php echo $message; ?></p>
+            <?php endif; ?>
+            <form class="form" action="login.php" method="post">
                 <input type="text" name="username" placeholder="Nazwa użytkownika" class="form-input" required>
                 <input type="password" name="password" placeholder="Hasło" class="form-input" required>
-                <button type="submit" class="form-button">Zaloguj</button>
+                <button type="submit" class="form-button">Zaloguj się</button>
             </form>
         </section>
     </main>

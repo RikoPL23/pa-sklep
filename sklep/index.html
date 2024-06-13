@@ -25,13 +25,17 @@
         </div>
         <div class="header-basket">
             <img src="./images/shopping_cart.svg" alt="shopping-cart-icon" />
-            <p class="basket-amount">Koszyk</p>
+            <button class="auth-btn" onclick="window.location.href='cart.html'">Koszyk</button>
             <button class="basket-clear-btn">x</button>
+            <span class="basket-amount" id="basket-amount">Koszyk</span>
         </div>
-        <div class="auth-buttons">
+        <div class="auth-buttons" id="auth-buttons">
             <button class="auth-btn" onclick="window.location.href='register.php'">Zarejestruj</button>
             <button class="auth-btn" onclick="window.location.href='login.php'">Zaloguj</button>
-            <button class="auth-btn" onclick="window.location.href='contact.html'">Kontakt</button>
+        </div>
+        <div class="auth-user" id="auth-user" style="display: none;">
+            <span id="username"></span>
+            <button class="auth-btn" onclick="logout()">Wyloguj</button>
         </div>
     </header>
     <main class="container">
@@ -42,7 +46,34 @@
         <section class="products"></section>
         <p class="empty-state">Nie znaleziono żadnego produktu...</p>
     </main>
+
+    <form id="orderForm" action="order.php" method="post" style="display: none;">
+        <input type="hidden" name="orderData" id="orderData" />
+    </form>
+
     <script src="products.js"></script>
     <script src="main.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            fetch("session_status.php")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.loggedin) {
+                        document.getElementById("auth-buttons").style.display = "none";
+                        document.getElementById("auth-user").style.display = "flex";
+                        document.getElementById("username").innerText = data.username;
+                    }
+                });
+        });
+
+        function logout() {
+            fetch("logout.php")
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    }
+                });
+        }
+    </script>
 </body>
 </html>

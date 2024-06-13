@@ -16,7 +16,7 @@ body {
 }
 
 header {
-  background-color:	#483D8B;
+  background-color: #483D8B;
   color: white;
   display: flex;
   padding: 40px;
@@ -49,7 +49,7 @@ header {
 }
 
 .search-bar-icon {
-  background:	#4682B4;
+  background: #4682B4;
   padding: 9px 9px;
   display: flex;
   border-top-right-radius: 15%;
@@ -262,7 +262,6 @@ header {
     margin-left: 15px;
     gap: 50px;
   }
-  
 }
 
 /* Stylizacja formularza kontaktowego */
@@ -376,4 +375,121 @@ header {
 .auth-btn:hover {
   background-color: #00FFFF;
   color: #483D8B;
+}
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: white;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+}
+
+.close-btn {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.basket-items {
+  margin-bottom: 20px;
+}
+
+.basket-total {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: right;
+}
+
+.basket-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.basket-item:last-child {
+  border-bottom: none;
+}
+/* Dodajemy na końcu pliku style.css */
+.admin-section {
+  margin-bottom: 30px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #f4f4f4;
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+form input, form select, form textarea, form button {
+  margin-bottom: 10px;
+}
+/* Dodajemy na końcu pliku style.css */
+.admin-section {
+  margin-bottom: 30px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #f4f4f4;
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+form input, form select, form textarea, form button {
+  margin-bottom: 10px;
 }

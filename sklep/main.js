@@ -1,129 +1,135 @@
-let currentProducts = products;
 let categories = new Set();
-let basket = [];
+let basket = JSON.parse(sessionStorage.getItem("basket")) || [];
 let addToBasketButtons;
 const productsSection = document.querySelector(".products");
 
-const addToBasket = (e) => {
-  const selectedId = parseInt(e.target.dataset.id);
+const isLoggedIn = () => {
+    return sessionStorage.getItem("loggedIn") === "true";
+};
 
-  const key = currentProducts.findIndex((product) => product.id === selectedId);
-
-  basket.push(currentProducts.at(key));
-
-  const basketTotal = basket.reduce((sum, product) => {
-    return (sum += product.price);
-  }, 0);
-
-  basketTotal > 0
-    ? basketClearBtn.classList.add("active")
-    : basketClearBtn.classList.remove("active");
-
-  basketAmountSpan.innerHTML = `${basketTotal} zł`;
+const fetchProducts = async () => {
+    const response = await fetch("get_products.php");
+    return response.json();
 };
 
 const renderProducts = (items) => {
-  productsSection.innerHTML = "";
-  for (let i = 0; i < items.length; i++) {
-    const newProduct = document.createElement("div");
-    newProduct.className = `product-item ${items[i].sale ? "on-sale" : ""}`;
-    newProduct.innerHTML = `
-    <img src="${items[i].image}" alt="product-image" />
-    <p class="product-name">${items[i].name}</p>
-    <p class="product-description">
-   ${items[i].description}
-    </p>
-    <div class="product-price">
-    <span class="price">${items[i].price.toFixed(2)} zł</span>
-    <span class="price-sale">${(items[i].price - items[i].saleAmount).toFixed(
-      2
-    )} zł</span>
-    </div>
-    <button data-id="${
-      items[i].id
-    }" class="product-add-to-basket-btn">Dodaj do koszyka</button>
-<p class="product-item-sale-info">Promocja</p>`;
+    productsSection.innerHTML = "";
+    for (let i = 0; i < items.length; i++) {
+        const newProduct = document.createElement("div");
+        newProduct.className = `product-item ${items[i].sale ? "on-sale" : ""}`;
+        newProduct.innerHTML = `
+        <img src="${items[i].image}" alt="product-image" />
+        <p class="product-name">${items[i].name}</p>
+        <p class="product-description">
+        ${items[i].description}
+        </p>
+        <div class="product-price">
+        <span class="price">${items[i].price.toFixed(2)} zł</span>
+        <span class="price-sale">${(items[i].price - items[i].saleAmount).toFixed(
+            2
+        )} zł</span>
+        </div>
+        <button data-id="${
+            items[i].id
+        }" class="product-add-to-basket-btn">Dodaj do koszyka</button>
+        <p class="product-item-sale-info">Promocja</p>`;
 
-    productsSection.appendChild(newProduct);
-  }
-  addToBasketButtons = document.querySelectorAll(".product-add-to-basket-btn");
-  addToBasketButtons.forEach((btn) =>
-    btn.addEventListener("click", addToBasket)
-  );
+        productsSection.appendChild(newProduct);
+    }
+    addToBasketButtons = document.querySelectorAll(".product-add-to-basket-btn");
+    addToBasketButtons.forEach((btn) =>
+        btn.addEventListener("click", addToBasket)
+    );
 };
 
 const renderCategories = (items) => {
-  for (let i = 0; i < items.length; i++) {
-    categories.add(items[i].category);
-  }
+    categories.clear();
+    for (let i = 0; i < items.length; i++) {
+        categories.add(items[i].category);
+    }
 
-  const categoriesItems = document.querySelector(".categories-items");
+    const categoriesItems = document.querySelector(".categories-items");
+    categoriesItems.innerHTML = '';
 
-  categories = ["wszystkie", ...categories];
+    categories = ["wszystkie", ...categories];
 
-  categories.forEach((category, index) => {
-    const newCategory = document.createElement("button");
-    newCategory.innerHTML = category;
-    newCategory.dataset.category = category;
+    categories.forEach((category, index) => {
+        const newCategory = document.createElement("button");
+        newCategory.innerHTML = category;
+        newCategory.dataset.category = category;
 
-    index === 0 ? newCategory.classList.add("active") : "";
+        index === 0 ? newCategory.classList.add("active") : "";
 
-    categoriesItems.appendChild(newCategory);
-  });
+        categoriesItems.appendChild(newCategory);
+    });
+
+    categoriesItems.querySelectorAll("button").forEach((btn) =>
+        btn.addEventListener("click", (e) => {
+            const category = e.target.dataset.category;
+
+            categoriesItems.querySelectorAll("button").forEach((btn) => btn.classList.remove("active"));
+            e.target.classList.add("active");
+
+            currentProducts = products;
+
+            if (category === "wszystkie") {
+                currentProducts = products;
+            } else {
+                currentProducts = currentProducts.filter(
+                    (product) => product.category === category
+                );
+            }
+
+            renderProducts(currentProducts);
+        })
+    );
 };
 
-document.onload = renderProducts(currentProducts);
-document.onload = renderCategories(currentProducts);
-
-const categoriesButtons = document.querySelectorAll(".categories-items button");
-
-categoriesButtons.forEach((btn) =>
-  btn.addEventListener("click", (e) => {
-    const category = e.target.dataset.category;
-
-    categoriesButtons.forEach((btn) => btn.classList.remove("active"));
-    e.target.classList.add("active");
-
-    currentProducts = products;
-
-    if (category === "wszystkie") {
-      currentProducts = products;
-    } else {
-      currentProducts = currentProducts.filter(
-        (product) => product.category === category
-      );
+const addToBasket = (e) => {
+    if (!isLoggedIn()) {
+        alert("Musisz być zalogowany, aby dodać produkt do koszyka.");
+        return;
     }
 
-    renderProducts(currentProducts);
-  })
-);
+    const selectedId = parseInt(e.target.dataset.id);
+    const product = currentProducts.find((product) => product.id === selectedId);
 
-const searchBarInput = document.querySelector(".search-bar-input");
+    basket.push(product);
+    sessionStorage.setItem("basket", JSON.stringify(basket));
 
-searchBarInput.addEventListener("input", (e) => {
-  const search = e.target.value;
+    updateBasketAmount();
+    updateOrderData();
+};
 
-  const foundProducts = currentProducts.filter((product) => {
-    if (product.name.toLowerCase().includes(search.toLowerCase())) {
-      return product;
+const updateBasketAmount = () => {
+    const basketTotal = basket.reduce((sum, product) => {
+        return (sum += product.price);
+    }, 0);
+
+    document.querySelector(".basket-amount").innerHTML = `${basketTotal.toFixed(2)} zł`;
+};
+
+const updateOrderData = () => {
+    const orderDataInput = document.getElementById("orderData");
+    if (orderDataInput) {
+        orderDataInput.value = JSON.stringify(basket);
     }
-  });
+};
 
-  const emptyState = document.querySelector(".empty-state");
+document.addEventListener("DOMContentLoaded", async () => {
+    fetch("session_status.php")
+        .then(response => response.json())
+        .then(data => {
+            if (data.loggedin) {
+                sessionStorage.setItem("loggedIn", "true");
+                document.getElementById("orderForm").style.display = "block";
+            } else {
+                sessionStorage.setItem("loggedIn", "false");
+            }
+        });
 
-  foundProducts.length === 0
-    ? emptyState.classList.add("active")
-    : emptyState.classList.remove("active");
-
-  renderProducts(foundProducts);
+    const products = await fetchProducts();
+    renderProducts(products);
+    renderCategories(products);
+    updateBasketAmount();
 });
-
-const basketAmountSpan = document.querySelector(".basket-amount");
-const basketClearBtn = document.querySelector(".basket-clear-btn");
-
-const clearBasket = () => {
-  basketAmountSpan.innerHTML = "Koszyk";
-  basket = [];
-};
-
-basketClearBtn.addEventListener("click", clearBasket);

@@ -2,38 +2,30 @@
 include 'config.php';
 session_start();
 
-if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] != 'admin') {
-    die("Dostęp zabroniony");
+if (!isset($_SESSION['role']) || ($_SESSION['role'] != 'moderator' && $_SESSION['role'] != 'admin')) {
+    die('Access denied');
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST['name'];
     $description = $_POST['description'];
+    $category = $_POST['category'];
     $price = $_POST['price'];
-    $stock = $_POST['stock'];
+    $image = $_POST['image'];
+    $sale = isset($_POST['sale']) ? 1 : 0;
+    $saleAmount = $_POST['saleAmount'];
 
-    $sql = "INSERT INTO products (name, description, price, stock) VALUES ('$name', '$description', '$price', '$stock')";
+    $stmt = $conn->prepare("INSERT INTO products (name, description, category, price, image, sale, saleAmount) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssdds", $name, $description, $category, $price, $image, $sale, $saleAmount);
 
-    if ($conn->query($sql) === TRUE) {
-        echo "Produkt dodany pomyślnie!";
+    if ($stmt->execute()) {
+        header("Location: admin_panel.php?message=product_added");
+        exit();
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "Error: " . $stmt->error;
     }
+
+    $stmt->close();
+    $conn->close();
 }
 ?>
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Dodawanie produktu</title>
-</head>
-<body>
-    <form method="POST" action="">
-        Nazwa: <input type="text" name="name" required><br>
-        Opis: <textarea name="description" required></textarea><br>
-        Cena: <input type="number" step="0.01" name="price" required><br>
-        Ilość: <input type="number" name="stock" required><br>
-        <input type="submit" value="Dodaj produkt">
-    </form>
-</body>
-</html>
