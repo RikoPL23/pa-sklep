@@ -1,26 +1,48 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <title>Sklep Internetowy</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="./images/favicon.png" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Gymownia | Sklep internetowy</title>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="index.html">Strona główna</a></li>
-            <li><a href="products.html">Produkty</a></li>
-            <li><a href="cart.html"><i class="fas fa-shopping-cart"></i> Koszyk</a></li>
-            <li><a href="contact.html"><i class="fas fa-envelope"></i> Kontakt</a></li>
-        </ul>
-    </nav>
-    
-    <section id="home" class="content-section">
-        <h1>Witaj w naszym sklepie internetowym!</h1>
-        <p>Zapraszamy do zapoznania się z naszą ofertą sprzętu siłownianego.</p>
-    </section>
-
-    <script src="js/main.js"></script>
+    <header>
+        <h1 class="header-title">
+            <span>Gymownia</span>
+        </h1>
+        <div class="search-bar">
+            <input
+                type="text"
+                class="search-bar-input"
+                placeholder="Szukaj w sklepie"
+                autocomplete="off"
+            />
+            <div class="search-bar-icon">
+                <img src="./images/search.svg" alt="search-icon" />
+            </div>
+        </div>
+        <div class="header-basket">
+            <img src="./images/shopping_cart.svg" alt="shopping-cart-icon" />
+            <p class="basket-amount">Koszyk</p>
+            <button class="basket-clear-btn">x</button>
+        </div>
+        <div class="auth-buttons">
+            <button class="auth-btn" onclick="window.location.href='register.php'">Zarejestruj</button>
+            <button class="auth-btn" onclick="window.location.href='login.php'">Zaloguj</button>
+            <button class="auth-btn" onclick="window.location.href='contact.html'">Kontakt</button>
+        </div>
+    </header>
+    <main class="container">
+        <aside class="categories">
+            <h1 class="categories-title">Kategorie</h1>
+            <section class="categories-items"></section>
+        </aside>
+        <section class="products"></section>
+        <p class="empty-state">Nie znaleziono żadnego produktu...</p>
+    </main>
+    <script src="products.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>

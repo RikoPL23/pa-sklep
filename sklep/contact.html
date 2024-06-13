@@ -2,32 +2,49 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Kontakt</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Kontakt | Gymownia</title>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="index.html">Strona główna</a></li>
-            <li><a href="products.html">Produkty</a></li>
-            <li><a href="cart.html"><i class="fas fa-shopping-cart"></i> Koszyk</a></li>
-            <li><a href="contact.html"><i class="fas fa-envelope"></i> Kontakt</a></li>
-        </ul>
-    </nav>
-    <section>
-        <h1>Kontakt</h1>
-        <p>Skontaktuj się z nami przez poniższy formularz.</p>
-        <form id="contactForm">
-            <label for="name">Imię:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <label for="message">Wiadomość:</label>
-            <textarea id="message" name="message" required></textarea>
-            <button type="submit">Wyślij</button>
-        </form>
-    </section>
-    <script src="js/main.js"></script>
+    <header>
+        <h1 class="header-title">
+            <span>Gymownia</span> Kontakt
+        </h1>
+        <div class="search-bar">
+            <input
+                type="text"
+                class="search-bar-input"
+                placeholder="Szukaj w sklepie"
+                autocomplete="off"
+            />
+            <div class="search-bar-icon">
+                <img src="./images/search.svg" alt="search-icon" />
+            </div>
+        </div>
+        <div class="header-basket">
+            <img src="./images/shopping_cart.svg" alt="shopping-cart-icon" />
+            <p class="basket-amount">Koszyk</p>
+            <button class="basket-clear-btn">x</button>
+        </div>
+        <div class="auth-buttons">
+            <button class="auth-btn" onclick="window.location.href='register.php'">Zarejestruj</button>
+            <button class="auth-btn" onclick="window.location.href='login.php'">Zaloguj</button>
+            <button class="auth-btn" onclick="window.location.href='index.html'">Strona Główna</button>
+        </div>
+    </header>
+    <main class="container">
+        <aside class="categories">
+            <h1 class="categories-title">Skontaktuj się z nami</h1>
+        </aside>
+        <section class="contact-form">
+            <form class="form">
+                <input type="text" placeholder="Imię" class="form-input">
+                <input type="email" placeholder="Email" class="form-input">
+                <textarea placeholder="Twoja Wiadomość" cols="30" rows="10" class="form-textarea"></textarea>
+                <button class="form-button">Wyślij</button>
+            </form>
+        </section>
+    </main>
 </body>
 </html>
