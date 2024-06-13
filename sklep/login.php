@@ -43,6 +43,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <span>Gymownia</span> Logowanie
         </h1>
     </header>
+    <div class="auth-buttons">
+         
+            <button class="auth-btn" onclick="window.location.href='index.html'">Strona Główna</button>
+        </div>
     <main class="container">
         <section class="auth-form">
             <form class="form" method="post" action="login.php">

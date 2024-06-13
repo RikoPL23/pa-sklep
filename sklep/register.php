@@ -37,6 +37,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h1 class="header-title">
             <span>Gymownia</span> Rejestracja
         </h1>
+        <div class="auth-buttons">
+          
+            <button class="auth-btn" onclick="window.location.href='index.html'">Strona Główna</button>
+        </div>
     </header>
     <main class="container">
         <section class="auth-form">
